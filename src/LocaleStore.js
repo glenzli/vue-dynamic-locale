@@ -1,7 +1,26 @@
 import fs from 'fs'
+import { RawTree } from 'js-objectex'
+
+const SEPERATOR = '.'
 
 function FormatTranslations (raw) {
   let rawTranslations = JSON.parse(raw)
+  return RawTree.Flat(rawTranslations)
+}
+
+function LoadTranslations (locale) {
+  let languageFile = `${LOCALE_PATH}/${locale}.json`
+  if (fs.existsSync(languageFile)) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(languageFile, 'utf-8', (err, data => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      }))
+    })
+  }
 }
 
 function CreateStore (path, defaultLocale) {
@@ -24,15 +43,16 @@ function CreateStore (path, defaultLocale) {
 
   const actions = {
     SET ({ state, commit }, locale) {
-      let languageFile = `${LOCALE_PATH}/${locale}.json`
-      if (fs.existsSync(languageFile)) {
+      LoadTranslations(locale).then(data => {
         commit('SET', locale)
-        fs.readFile(languageFile, 'utf-8', (err, data => {
-          commit('SET_TRANSLATIONS', FormatTranslations(data))
-        }))
-      }
+        commit('SET_TRANSLATIONS', FormatTranslations(data))
+      })
     }
   }
+
+  LoadTranslations(defaultLocale).then(data => {
+    state.translations = FormatTranslations(data)
+  })
 
   return {
     namespaced: true,

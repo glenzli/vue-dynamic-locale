@@ -1,6 +1,2 @@
-const VueDynamicLocale = {
-  install (Vue, { store, path }) {
-  }
-}
-
+import VueDynamicLocale from './VueDynamicLocale'
 export default VueDynamicLocale

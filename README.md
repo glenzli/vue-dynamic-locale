@@ -18,9 +18,11 @@ import VueDynamicLocale from 'vue-dynamic-locale'
 
 // path is the directory of locale json files.
 const path = 'static/locale'
+// default locale for the application
+const defaultLocale = 'en'
 
 // Vuex store must be included in options.
-Vue.install(VueDynamicLocale, { store, path })
+Vue.install(VueDynamicLocale, { store, path, defaultLocale })
 ```
 
 Then, you can use **$t** object in your Vue components to access current language for specific key. For example, the language json file may like this:
