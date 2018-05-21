@@ -6,6 +6,11 @@ var webpackConfig = {
   module: {
     rules: [
       {
+        test: /\.js/,
+        exclude: /node_module/,
+        use: 'babel-loader'
+      },
+      {
         test: /\.js$/,
         exclude: /node_module/,
         use: {
@@ -19,9 +24,14 @@ var webpackConfig = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    library: 'jsObjectex',
+    library: 'VueDynamicLocale',
     libraryTarget: 'umd'
-  }
+  },
+  externals: {
+    Vue: 'vue',
+    JsObjectex: 'js-objectex'
+  },
+  target: 'node'
 }
 
 export default webpackConfig
