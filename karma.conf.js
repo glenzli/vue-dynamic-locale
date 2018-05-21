@@ -1,9 +1,15 @@
-// Karma configuration
+const path = require('path')
 
+// Karma configuration
 const webpackConfig = {
   cache: true,
   mode: 'none',
   devtool: 'inline-source-map',
+  resolve: {
+    alias: {
+      'fs': path.join(__dirname, 'test/test-fs')
+    }
+  },
   module: {
     rules: [
       {
