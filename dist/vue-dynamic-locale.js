@@ -1599,4 +1599,4 @@ module.exports = require("fs");
 
 /******/ });
 });
-//# sourceMappingURL=vue-undoable.js.map
+//# sourceMappingURL=vue-dynamic-locale.js.map

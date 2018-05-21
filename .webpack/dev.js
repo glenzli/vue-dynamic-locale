@@ -6,7 +6,7 @@ const webpackConfig = merge(baseConfig, {
   devtool: 'source-map',
   mode: 'development',
   output: {
-    filename: 'vue-undoable.js'
+    filename: 'vue-dynamic-locale.js'
   }
 })
 

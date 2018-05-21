@@ -6,7 +6,7 @@ const webpackConfig = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
   mode: 'production',
   output: {
-    filename: 'vue-undobale.min.js'
+    filename: 'vue-dynamic-locale.min.js'
   }
 })
 
