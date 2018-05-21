@@ -6,7 +6,8 @@ const VueDynamicLocale = {
     path = path || 'static/locale'
     defaultLocale = defaultLocale || 'en'
 
-    store.registerModule('locale', CreateStore(path, defaultLocale))
+    store.registerModule('locale', CreateStore(path))
+    store.dispatch('locale/SET', defaultLocale)
 
     Vue.prototype.$setLocale = function (locale) {
       this.$store.dispatch('locale/SET', locale)

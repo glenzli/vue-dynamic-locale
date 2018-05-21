@@ -1455,11 +1455,11 @@ function LoadTranslations(locale, localePath) {
   });
 }
 
-function CreateStore(path, defaultLocale) {
+function CreateStore(path) {
   var LOCALE_PATH = path;
 
   var state = {
-    locale: defaultLocale,
+    locale: '',
     translations: {}
   };
 
@@ -1483,10 +1483,6 @@ function CreateStore(path, defaultLocale) {
       });
     }
   };
-
-  LoadTranslations(defaultLocale, LOCALE_PATH).then(function (data) {
-    state.translations = FormatTranslations(data);
-  });
 
   return {
     namespaced: true,
@@ -1533,7 +1529,8 @@ var VueDynamicLocale = {
     path = path || 'static/locale';
     defaultLocale = defaultLocale || 'en';
 
-    store.registerModule('locale', (0, _LocaleStore2.default)(path, defaultLocale));
+    store.registerModule('locale', (0, _LocaleStore2.default)(path));
+    store.dispatch('locale/SET', defaultLocale);
 
     Vue.prototype.$setLocale = function (locale) {
       this.$store.dispatch('locale/SET', locale);

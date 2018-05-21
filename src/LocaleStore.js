@@ -23,11 +23,11 @@ function LoadTranslations (locale, localePath) {
   })
 }
 
-function CreateStore (path, defaultLocale) {
+function CreateStore (path) {
   const LOCALE_PATH = path
 
   const state = {
-    locale: defaultLocale,
+    locale: '',
     translations: {}
   }
 
@@ -49,10 +49,6 @@ function CreateStore (path, defaultLocale) {
       })
     }
   }
-
-  LoadTranslations(defaultLocale, LOCALE_PATH).then(data => {
-    state.translations = FormatTranslations(data)
-  })
 
   return {
     namespaced: true,
