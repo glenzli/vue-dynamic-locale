@@ -4,8 +4,8 @@ import Vuex from 'vuex'
 import chai from 'chai'
 import VueDynamicLocale from '../../src'
 
-fs.writeFile('locale/en.json', '{"A": "Alphabet", "B": { "$": "Flat", "C": "Command" } }')
-fs.writeFile('locale/zh.json', '{"A": "字母表", "B": { "$": "展开", "C": "命令" } }')
+fs.writeFile('locale/en.json', '{"A": "Alphabet", "B": { ".": "Flat", "C": "Command" } }')
+fs.writeFile('locale/zh.json', '{"A": "字母表", "B": { ".": "展开", "C": "命令" } }')
 
 const expect = chai.expect
 

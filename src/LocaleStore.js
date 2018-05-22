@@ -5,7 +5,7 @@ function FormatTranslations (raw) {
   let rawTranslations = JSON.parse(raw)
   let flat = RawTree.Flat(rawTranslations, '', '.')
   return RawMap.DoubleMap(flat, (value, key) => ({
-    key: key.endsWith('$') ? key.substr(0, key.length - 2) : key,
+    key: key.endsWith('..') ? key.substr(0, key.length - 2) : key,
     value
   }))
 }

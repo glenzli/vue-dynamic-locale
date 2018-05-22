@@ -33,7 +33,11 @@ Then, you can use **$t** object in your Vue components to access current languag
     "World": "Dynamic"
   },
   "Locale": "Vue",
-  "Array": ["Value1", "Value2", "Value3"]
+  "Array": ["Value1", "Value2", "Value3"],
+  "Root": {
+    ".": "Root", // "." is a special key represents it's root
+    "Child": "Child"
+  }
 }
 ```
 
@@ -43,6 +47,8 @@ $t['Hellow.World'] // === 'Dynamic'
 $t['Locale'] // === 'Vue'
 $t['Array.0'] // === 'Value1'
 $t['Array.2'] // === 'Value3'
+$t['Root'] // === 'Root'
+$t['Root.Child'] // === 'Child'
 ```
 
 You can change locale by **$setLocale()**, and **$getLocales()** to list all avaiable locales in your locale directory.
