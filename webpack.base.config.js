@@ -28,8 +28,8 @@ var webpackConfig = {
     libraryTarget: 'umd'
   },
   externals: {
-    Vue: 'vue',
-    JsObjectex: 'js-objectex'
+    vue: true,
+    'js-objectex': true
   },
   target: 'node'
 }
