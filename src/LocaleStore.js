@@ -1,9 +1,13 @@
 import fs from 'fs'
-import { RawTree } from 'js-objectex'
+import { RawTree, RawMap } from 'js-objectex'
 
 function FormatTranslations (raw) {
   let rawTranslations = JSON.parse(raw)
-  return RawTree.Flat(rawTranslations, '', '.')
+  let flat = RawTree.Flat(rawTranslations, '', '.')
+  return RawMap.DoubleMap(flat, (value, key) => ({
+    key: key.endsWith('$') ? key.substr(0, key.length - 2) : key,
+    value
+  }))
 }
 
 function LoadTranslations (locale, localePath) {

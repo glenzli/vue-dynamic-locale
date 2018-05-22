@@ -4,8 +4,8 @@ import Vuex from 'vuex'
 import chai from 'chai'
 import VueDynamicLocale from '../../src'
 
-fs.writeFile('locale/en.json', '{"A": "Alphabet", "B": { "C": "Command" } }')
-fs.writeFile('locale/zh.json', '{"A": "字母表", "B": { "C": "命令" } }')
+fs.writeFile('locale/en.json', '{"A": "Alphabet", "B": { "$": "Flat", "C": "Command" } }')
+fs.writeFile('locale/zh.json', '{"A": "字母表", "B": { "$": "展开", "C": "命令" } }')
 
 const expect = chai.expect
 
@@ -30,6 +30,7 @@ describe('DynamicLocale', function () {
     it('$t', function () {
       let vm = new Vue({ store })
       expect(vm.$t['A']).to.be.equal('Alphabet')
+      expect(vm.$t['B']).to.be.equal('Flat')
       expect(vm.$t['B.C']).to.be.equal('Command')
     })
 
@@ -38,6 +39,7 @@ describe('DynamicLocale', function () {
       vm.$setLocale('zh')
       setTimeout(function () {
         expect(vm.$t['A']).to.be.equal('字母表')
+        expect(vm.$t['B']).to.be.equal('展开')
         expect(vm.$t['B.C']).to.be.equal('命令')
       }, 0)
     })

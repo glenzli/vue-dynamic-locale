@@ -1435,7 +1435,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function FormatTranslations(raw) {
   var rawTranslations = JSON.parse(raw);
-  return _jsObjectex.RawTree.Flat(rawTranslations, '', '.');
+  var flat = _jsObjectex.RawTree.Flat(rawTranslations, '', '.');
+  return _jsObjectex.RawMap.DoubleMap(flat, function (value, key) {
+    return {
+      key: key.endsWith('$') ? key.substr(0, key.length - 2) : key,
+      value: value
+    };
+  });
 }
 
 function LoadTranslations(locale, localePath) {
