@@ -1,16 +1,17 @@
 import fs from 'fs'
-import { RawTree, RawMap } from 'js-objectex'
+import { DirectMap, DirectTree, DirectMapObject } from 'direct-object'
+import { Module, ActionTree, MutationTree } from 'vuex'
 
-function FormatTranslations (raw) {
+function FormatTranslations(raw: string) {
   let rawTranslations = JSON.parse(raw)
-  let flat = RawTree.Flat(rawTranslations, '', '.')
-  return RawMap.DoubleMap(flat, (value, key) => ({
+  let flat = <DirectMapObject<string>>DirectTree.Flat(rawTranslations, '', '.')
+  return DirectMap.DoubleMap(flat, (value, key) => ({
     key: key.endsWith('..') ? key.substr(0, key.length - 2) : key,
     value
   }))
 }
 
-function LoadTranslations (locale, localePath) {
+function LoadTranslations(locale: string, localePath: string): Promise<string> {
   let languageFile = `${localePath}/${locale}.json`
   return new Promise((resolve, reject) => {
     if (fs.existsSync(languageFile)) {
@@ -27,26 +28,31 @@ function LoadTranslations (locale, localePath) {
   })
 }
 
-function CreateStore (path) {
+export interface LocaleState {
+  locale: string
+  translations: DirectMapObject<string>
+}
+
+export function CreateModule(path: string) {
   const LOCALE_PATH = path
 
-  const state = {
+  const state = <LocaleState>{
     locale: '',
     translations: {}
   }
 
-  const mutations = {
-    SET (state, locale) {
+  const mutations: MutationTree<LocaleState> = {
+    SET(state: LocaleState, locale: string) {
       state.locale = locale
     },
 
-    SET_TRANSLATIONS (state, translations) {
+    SET_TRANSLATIONS(state: LocaleState, translations: DirectMapObject<string>) {
       state.translations = translations
     }
   }
 
-  const actions = {
-    SET ({ state, commit }, locale) {
+  const actions: ActionTree<LocaleState, any> = {
+    SET({ commit }, locale: string) {
       LoadTranslations(locale, LOCALE_PATH).then(data => {
         commit('SET', locale)
         commit('SET_TRANSLATIONS', FormatTranslations(data))
@@ -54,12 +60,10 @@ function CreateStore (path) {
     }
   }
 
-  return {
+  return <Module<LocaleState, any>>{
     namespaced: true,
     state,
     mutations,
     actions
   }
 }
-
-export default CreateStore
