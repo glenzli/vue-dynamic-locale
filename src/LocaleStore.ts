@@ -4,7 +4,7 @@ import { Module, ActionTree, MutationTree } from 'vuex'
 
 function FormatTranslations(raw: string) {
   let rawTranslations = JSON.parse(raw)
-  let flat = <DirectMapObject<string>>DirectTree.Flat(rawTranslations, '', '.')
+  let flat = DirectTree.Flat(rawTranslations, '', '.') as DirectMapObject<string>
   return DirectMap.DoubleMap(flat, (value, key) => ({
     key: key.endsWith('..') ? key.substr(0, key.length - 2) : key,
     value
@@ -36,10 +36,10 @@ export interface LocaleState {
 export function CreateModule(path: string) {
   const LOCALE_PATH = path
 
-  const state = <LocaleState>{
+  const state = {
     locale: '',
     translations: {}
-  }
+  } as LocaleState
 
   const mutations: MutationTree<LocaleState> = {
     SET(state: LocaleState, locale: string) {
@@ -60,10 +60,10 @@ export function CreateModule(path: string) {
     }
   }
 
-  return <Module<LocaleState, any>>{
+  return {
     namespaced: true,
     state,
     mutations,
     actions
-  }
+  } as Module<LocaleState, any>
 }
