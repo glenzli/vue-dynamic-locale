@@ -1,9 +1,22 @@
-import fs from 'fs'
 import { DirectMap, DirectTree, DirectMapObject } from 'direct-object'
 import { Module, ActionTree, MutationTree } from 'vuex'
 
-function FormatTranslations(raw: string) {
-  let rawTranslations = JSON.parse(raw)
+function GetJson(url: string) {
+  return new Promise<DirectMapObject<any>>((resolve, reject) => {
+    let http = new XMLHttpRequest()
+    http.onreadystatechange = () => {
+      if (http.readyState === 4 && http.status === 200) {
+        resolve(JSON.parse(http.responseText))
+      } else {
+        reject()
+      }
+    }
+    http.open('get', url)
+    http.send()
+  })
+}
+
+function FormatTranslations(rawTranslations: DirectMapObject<any>) {
   let flat = DirectTree.Flat(rawTranslations, '', '.') as DirectMapObject<string>
   return DirectMap.DoubleMap(flat, (value, key) => ({
     key: key.endsWith('..') ? key.substr(0, key.length - 2) : key,
@@ -11,20 +24,10 @@ function FormatTranslations(raw: string) {
   }))
 }
 
-function LoadTranslations(locale: string, localePath: string): Promise<string> {
+function LoadTranslations(locale: string, localePath: string): Promise<DirectMapObject<any>> {
   let languageFile = `${localePath}/${locale}.json`
   return new Promise((resolve, reject) => {
-    if (fs.existsSync(languageFile)) {
-      fs.readFile(languageFile, 'utf-8', (err, data) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      })
-    } else {
-      reject(new Error('404'))
-    }
+    GetJson(languageFile).then(resolve, reject)
   })
 }
 

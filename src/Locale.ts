@@ -22,7 +22,7 @@ export const VueDynamicLocale: PluginObject<LocaleOptions> = {
       vue.mixin({
         computed: {
           $t() {
-            return (<Store<any>>this.$store).state.locale.translations
+            return (this.$store as Store<any>).state.locale.translations
           }
         }
       })
