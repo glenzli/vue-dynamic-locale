@@ -1,6 +1,6 @@
 {
   "name": "vue-dynamic-locale",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A dynamic multi-language plugin for Vue.",
   "main": "dist/vue-dynamic-locale.umd.js",
   "module": "dist/vue-dynamice-locale.es5.js",
