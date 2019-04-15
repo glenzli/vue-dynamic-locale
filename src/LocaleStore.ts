@@ -5,10 +5,18 @@ function GetJson(url: string) {
   return new Promise<DirectMapObject<any>>((resolve, reject) => {
     let http = new XMLHttpRequest()
     http.onreadystatechange = () => {
-      if (http.readyState === 4 && http.status === 200) {
-        resolve(JSON.parse(http.responseText))
-      } else {
-        reject()
+      if (http.readyState === 4) {
+        let data: DirectMapObject<any> = {}
+        if (http.status === 200 && http.responseText) {
+          try {
+            data = JSON.parse(http.responseText)
+          } catch (e) {
+            reject(e)
+          }
+          resolve(data)
+        } else {
+          reject(new Error('404'))
+        }
       }
     }
     http.open('get', url)
@@ -17,7 +25,7 @@ function GetJson(url: string) {
 }
 
 function FormatTranslations(rawTranslations: DirectMapObject<any>) {
-  let flat = DirectTree.Flat(rawTranslations, '', '.') as DirectMapObject<string>
+  let flat = DirectTree.Flat(rawTranslations, '.')
   return DirectMap.DoubleMap(flat, (value, key) => ({
     key: key.endsWith('..') ? key.substr(0, key.length - 2) : key,
     value
@@ -26,9 +34,7 @@ function FormatTranslations(rawTranslations: DirectMapObject<any>) {
 
 function LoadTranslations(locale: string, localePath: string): Promise<DirectMapObject<any>> {
   let languageFile = `${localePath}/${locale}.json`
-  return new Promise((resolve, reject) => {
-    GetJson(languageFile).then(resolve, reject)
-  })
+  return GetJson(languageFile)
 }
 
 export interface LocaleState {
